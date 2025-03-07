@@ -269,7 +269,7 @@ body {
     font-size: 24px;
     opacity: 0.8;
     pointer-events: none;
-    z-index: 50; /* Cao hơn profile-container */
+    z-index: 9999; /* Cao hơn profile-container */
     animation: waveFall linear infinite;
 }
 
