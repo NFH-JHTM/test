@@ -343,39 +343,38 @@ body {
     font-family: 'Itim', cursive;
 }
 
-/* 🌟 Nút ? */
+/* Nút "?" */
 .morse-button {
-    background-color: #ff85a2;
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #ff85a2;
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
 
 .morse-button:hover {
-    background-color: #ff5b8a;
+    background: #ff5b8a;
 }
 
-/* 📜 Panel chứa mã Morse */
+/* Panel Morse Code */
 .morse-panel {
-    display: none;
-    background: white;
+    display: none; /* Ẩn mặc định */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 50px;
+    width: 200px;
     padding: 10px;
+    background: white;
+    border: 2px solid #ff69b4;
     border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
     text-align: center;
-    border: 2px solid #ff8fa3;
-}
-
-/* 🔠 Mã Morse */
-.morse-code {
-    font-family: monospace;
-    font-size: 18px;
-    color: #d63384;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
