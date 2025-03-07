@@ -119,6 +119,8 @@ body {
     align-items: center;
     animation: fadeIn 0.5s forwards;
     border: 2px solid #ff8fa3;
+    position: relative; /* Giữ nguyên để không bị chìm */
+    z-index: 10; /* Đảm bảo nó không đè lên hoa rơi */
 }
 
 /* ✨ Transition khi vào trang cá nhân */
@@ -262,13 +264,12 @@ body {
     background-size: cover;
 }
 
-/* 🌸 Hoa rơi mượt với hiệu ứng lượn sóng */
 .floating-flower {
     position: fixed;
     font-size: 24px;
     opacity: 0.8;
     pointer-events: none;
-    z-index: 10;
+    z-index: 50; /* Cao hơn profile-container */
     animation: waveFall linear infinite;
 }
 
