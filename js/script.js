@@ -76,29 +76,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 🌸 Hiệu ứng Hoa Rơi (Tùy Theo Trang Cá Nhân)
+
+    // 🌸 Danh sách hiệu ứng cho từng người
     const effects = [
         "🌸", "🍂", "🎶", "💖", "✨", "🔥", "❄️", "🌿", "🍁", "💎", "🎈", "🌟", "💥", "🦋", "🎀", "🌊",
         "☁️", "💫", "🎵", "🏵️", "🌺", "🍀", "🐚", "🕊️", "🔮", "🎇", "🌠", "💡", "🍭"
     ];
 
+    // Kiểm tra nếu đang ở trang cá nhân
     const match = window.location.pathname.match(/person(\d+)\.html/);
     if (match) {
         const personIndex = parseInt(match[1]) - 1;
         const chosenEffect = effects[personIndex % effects.length];
 
         let effectsList = [];
-        const maxEffects = 15; 
+        const maxEffects = 15; // 🌸 Giới hạn số hiệu ứng trên màn hình
 
         function createEffect() {
-            if (effectsList.length >= maxEffects) return;
+            if (effectsList.length >= maxEffects) return; // Nếu đạt giới hạn, không tạo thêm
 
             const effect = document.createElement("div");
             effect.classList.add("floating-effect");
             effect.innerHTML = chosenEffect;
 
+            let startX = Math.random() * window.innerWidth;
+            let duration = Math.random() * 5 + 3; // Random thời gian rơi
+            let amplitude = Math.random() * 100 + 50; // Độ rộng lượn sóng
+            let speed = Math.random() * 2 + 1; // Tốc độ lượn
+
             effect.style.position = "fixed";
-            effect.style.left = Math.random() * window.innerWidth + "px";
+            effect.style.left = `${startX}px`;
             effect.style.top = "-50px"; // Bắt đầu từ trên cao
             effect.style.fontSize = "24px";
             effect.style.opacity = Math.random() * 0.8 + 0.2;
@@ -108,18 +115,25 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.appendChild(effect);
             effectsList.push(effect);
 
-            let duration = Math.random() * 5 + 3; // Random thời gian rơi
-            effect.style.transition = `top ${duration}s linear, opacity ${duration}s linear`;
+            let startTime = Date.now();
 
-            setTimeout(() => {
-                effect.style.top = window.innerHeight + "px";
-                effect.style.opacity = "0";
-            }, 10);
+            function animateEffect() {
+                let elapsed = (Date.now() - startTime) / 1000; // Thời gian đã trôi qua
+                let newX = startX + Math.sin(elapsed * speed) * amplitude; // Tạo hiệu ứng lượn
+                let newY = elapsed * (window.innerHeight / duration); // Rơi xuống từ từ
 
-            setTimeout(() => {
-                effect.remove();
-                effectsList = effectsList.filter(e => e !== effect);
-            }, duration * 1000);
+                effect.style.transform = `translate(${newX - startX}px, ${newY}px)`;
+                effect.style.opacity = 1 - elapsed / duration; // Mờ dần khi gần chạm đất
+
+                if (elapsed < duration) {
+                    requestAnimationFrame(animateEffect);
+                } else {
+                    effect.remove();
+                    effectsList = effectsList.filter(e => e !== effect);
+                }
+            }
+
+            requestAnimationFrame(animateEffect);
         }
 
         function startEffects() {
@@ -134,3 +148,4 @@ document.addEventListener("DOMContentLoaded", function () {
         startEffects();
     }
 });
+
