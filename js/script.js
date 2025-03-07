@@ -83,59 +83,31 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!isProfilePage) return; // Nếu không phải trang cá nhân thì dừng lại luôn
 
     // 🌸 Hiệu ứng hoa rơi lượn sóng
-    function createFloatingEffect() {
-        const profileGrid = document.querySelector(".grid");
-        if (!profileGrid) return;
+   function createFloatingFlower() {
+    if (!document.querySelector(".grid")) return; // Chỉ chạy trong trang cá nhân
 
-        const floatingEffect = document.createElement("div");
-        floatingEffect.classList.add("floating-effect");
-        floatingEffect.innerHTML = "🌸";
+    const flower = document.createElement("div");
+    flower.classList.add("floating-flower");
+    flower.innerHTML = "🌸";
 
-        let gridRect = profileGrid.getBoundingClientRect();
-        let startX = Math.random() * gridRect.width + gridRect.left; // Random vị trí trên grid
-        let duration = Math.random() * 10 + 5; // Thời gian rơi chậm hơn (5-15s)
-        let amplitude = Math.random() * 80 + 30; // Độ rộng lượn sóng (mềm hơn)
-        let speed = Math.random() * 1 + 0.5; // Tốc độ dao động (chậm hơn)
+    let startX = Math.random() * window.innerWidth;
+    let waveX = Math.random() * 100 - 50; // Hoa lượn sóng random (-50px đến 50px)
 
-        floatingEffect.style.position = "fixed";
-        floatingEffect.style.left = `${startX}px`;
-        floatingEffect.style.top = `${gridRect.top - 50}px`; // Bắt đầu ngay trên grid
-        floatingEffect.style.fontSize = "24px";
-        floatingEffect.style.opacity = Math.random() * 0.8 + 0.4;
-        floatingEffect.style.zIndex = "10";
-        floatingEffect.style.pointerEvents = "none";
+    flower.style.left = `${startX}px`;
+    flower.style.top = "-50px"; // Bắt đầu từ trên cao
+    flower.style.animationDuration = `${Math.random() * 5 + 5}s`; // Rơi từ từ 5-10s
+    flower.style.setProperty("--wave-x", `${waveX}px`); // Truyền vào CSS variable
 
-        document.body.appendChild(floatingEffect);
+    document.body.appendChild(flower);
 
-        let startTime = Date.now();
+    setTimeout(() => flower.remove(), 10000); // Xóa sau khi rơi xong
+}
 
-        function animateEffect() {
-            let elapsed = (Date.now() - startTime) / 1000; // Thời gian trôi qua
-            let newX = startX + Math.sin(elapsed * speed) * amplitude; // Lượn sóng ngang
-            let newY = elapsed * (gridRect.height / duration); // Rơi xuống từ từ
+function startFlowerEffect() {
+    createFloatingFlower();
+    setTimeout(startFlowerEffect, Math.random() * 2000 + 1000);
+}
 
-            floatingEffect.style.transform = `translate(${newX - startX}px, ${newY}px)`;
-            floatingEffect.style.opacity = 1 - elapsed / duration; // Mờ dần
-
-            if (elapsed < duration) {
-                requestAnimationFrame(animateEffect);
-            } else {
-                floatingEffect.remove();
-            }
-        }
-
-        requestAnimationFrame(animateEffect);
-    }
-
-    function startFloatingEffects() {
-        createFloatingEffect();
-        setTimeout(startFloatingEffects, Math.random() * 2000 + 1000); // Xuất hiện ngẫu nhiên (1-3s)
-    }
-
-    startFloatingEffects();
-
-    // Khi rời tab rồi quay lại, hiệu ứng sẽ tiếp tục
-    document.addEventListener("visibilitychange", function () {
-        if (!document.hidden) startFloatingEffects();
-    });
-});
+if (window.location.pathname.includes("person")) {
+    startFlowerEffect();
+}
