@@ -139,15 +139,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+    document.addEventListener("DOMContentLoaded", function () {
     const morseButton = document.querySelector(".morse-button");
     const morsePanel = document.querySelector(".morse-panel");
 
-    morseButton.addEventListener("click", function () {
-        morsePanel.style.display = "block"; // Hiện panel
+    if (morseButton && morsePanel) {
+        morseButton.addEventListener("click", function () {
+            morsePanel.style.display = "block"; // Hiện panel
 
-        // Tự tắt panel sau 5 giây
-        setTimeout(() => {
-            morsePanel.style.display = "none";
-        }, 5000);
-    });
+            // Tự tắt panel sau 5 giây
+            setTimeout(() => {
+                morsePanel.style.display = "none";
+            }, 5000);
+        });
+    }
 });
+
