@@ -343,7 +343,7 @@ body {
     font-family: 'Itim', cursive;
 }
 
-/* Ẩn panel mặc định */
+/* 📜 Ẩn panel Morse Code mặc định */
 .morse-panel {
     display: none;
     position: absolute;
@@ -362,7 +362,7 @@ body {
     box-shadow: 0 3px 10px rgba(255, 105, 180, 0.5);
 }
 
-/* Làm nút ? trông bí ẩn */
+/* 🔮 Làm nút "?" trông bí ẩn hơn */
 .morse-button {
     background: black;
     color: #ff69b4;
@@ -373,11 +373,11 @@ body {
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    position: relative;
-    left: 10px;
+    display: block;
+    margin: 10px auto;
 }
 
-/* Hover để thêm hiệu ứng */
+/* 🌟 Hover hiệu ứng phát sáng */
 .morse-button:hover {
     background: #ff69b4;
     color: black;
