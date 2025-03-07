@@ -342,3 +342,40 @@ body {
     font-weight: bold;
     font-family: 'Itim', cursive;
 }
+
+/* 🌟 Nút ? */
+.morse-button {
+    background-color: #ff85a2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.morse-button:hover {
+    background-color: #ff5b8a;
+}
+
+/* 📜 Panel chứa mã Morse */
+.morse-panel {
+    display: none;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 10px;
+    text-align: center;
+    border: 2px solid #ff8fa3;
+}
+
+/* 🔠 Mã Morse */
+.morse-code {
+    font-family: monospace;
+    font-size: 18px;
+    color: #d63384;
+}
