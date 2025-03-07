@@ -343,14 +343,41 @@ body {
     font-family: 'Itim', cursive;
 }
 
-/* 📜 Ẩn panel Morse Code mặc định */
+/* 🔮 Nút "?" nhỏ gọn hơn */
+.morse-button {
+    background: black;
+    color: #ff69b4;
+    font-size: 16px; /* Nhỏ hơn */
+    font-weight: bold;
+    border: 2px solid #ff69b4;
+    padding: 4px 10px; /* Nhỏ hơn */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    width: 28px; /* Giới hạn kích thước */
+    height: 28px;
+    text-align: center;
+    line-height: 20px; /* Canh giữa */
+}
+
+/* 🌟 Hover hiệu ứng phát sáng */
+.morse-button:hover {
+    background: #ff69b4;
+    color: black;
+    box-shadow: 0 0 10px #ff69b4;
+}
+
+/* 📜 Panel Morse Code (nằm lệch sang phải) */
 .morse-panel {
-    display: none;
+    display: none; /* Ẩn mặc định */
     position: absolute;
-    left: 50%;
+    left: calc(50% + 20px); /* Dịch sang phải 20px */
     transform: translateX(-50%);
     bottom: 50px;
-    width: 200px;
+    width: 220px;
     padding: 10px;
     background: rgba(0, 0, 0, 0.8);
     color: #ff69b4;
@@ -362,24 +389,11 @@ body {
     box-shadow: 0 3px 10px rgba(255, 105, 180, 0.5);
 }
 
-/* 🔮 Làm nút "?" trông bí ẩn hơn */
-.morse-button {
-    background: black;
-    color: #ff69b4;
-    font-size: 20px;
-    font-weight: bold;
-    border: 2px solid #ff69b4;
-    padding: 5px 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    display: block;
-    margin: 10px auto;
-}
-
-/* 🌟 Hover hiệu ứng phát sáng */
-.morse-button:hover {
-    background: #ff69b4;
-    color: black;
-    box-shadow: 0 0 10px #ff69b4;
+/* 📱 Responsive: Điều chỉnh vị trí panel trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .morse-panel {
+        left: 50%; /* Đưa về giữa */
+        transform: translateX(-50%);
+        width: 200px;
+    }
 }
