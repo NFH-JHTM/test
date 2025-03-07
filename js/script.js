@@ -1,38 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Script Loaded! 🚀");
-
-    // 🌸 Tạo Profile Card tự động
-    let grid = document.querySelector(".grid");
-    if (grid) {
-        for (let i = 1; i <= 28; i++) {
-            let card = document.createElement("a");
-            card.href = `pages/person${i}.html`;
-            card.classList.add("card");
-
-            card.innerHTML = `
-                <img src="images/person${i}.webp" alt="Person ${i}">
-                <div class="info">
-                    <h2>Nhân vật ${i}</h2>
-                </div>
-            `;
-
-            grid.appendChild(card);
-        }
+    let grid = document.getElementById("memberGrid");
+    
+    for (let i = 1; i <= 28; i++) {
+        let card = document.createElement("a");
+        card.href = `pages/person${i}.html`;
+        card.classList.add("card");
+        
+        card.innerHTML = `
+            <img src="images/person${i}.webp" alt="Person ${i}">
+            <div class="info">
+                <p>Nhân vật ${i}</p>
+            </div>
+        `;
+        
+        grid.appendChild(card);
     }
+});
 
-    // 🔍 Tìm kiếm Profile
-    document.getElementById("searchBar").addEventListener("keyup", function () {
-        let input = this.value.toLowerCase();
-        let cards = document.querySelectorAll(".card");
-
-        cards.forEach(card => {
-            let name = card.querySelector(".info h2").innerText.toLowerCase();
-            card.style.display = name.includes(input) ? "block" : "none";
-        });
-    });
-
-    // 🃏 Hover Effect cho Card
+function searchCards() {
+    let input = document.getElementById("searchBar").value.toLowerCase();
     let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        let name = card.querySelector("h2").innerText.toLowerCase();
+        if (name.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    let cards = document.querySelectorAll(".card");
+
     cards.forEach(card => {
         card.addEventListener("mouseenter", () => {
             card.style.transform = "translateY(-5px)";
@@ -44,63 +45,95 @@ document.addEventListener("DOMContentLoaded", function () {
             card.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
         });
     });
+});
 
-    // ⏳ Loading Screen (Chỉ Chạy Ở Trang Chủ)
-    const loadingScreen = document.querySelector(".loading-screen");
-    if (loadingScreen) {
-        let progress = 0;
-        const previousPage = document.referrer;
+document.addEventListener("DOMContentLoaded", function () {
+    if (!document.querySelector(".profile-container")) return; // Chỉ chạy trong trang cá nhân
 
-        if (previousPage.includes("person")) {
-            loadingScreen.style.display = "none";
-        } else {
-            function updateLoading() {
-                progress += Math.random() * 5 + 3;
-                if (progress > 100) progress = 100;
+    const maxFlowers = 15; 
+    let flowers = [];
+    let flowerInterval;
 
-                document.querySelector(".loading-bar").style.width = progress + "%";
-                document.querySelector(".loading-text").innerText = `Loading... ${Math.floor(progress)}%`;
+    function createFlower() {
+        if (flowers.length >= maxFlowers) return; 
 
-                if (progress < 100) {
-                    setTimeout(updateLoading, 300);
-                } else {
-                    setTimeout(() => {
-                        loadingScreen.style.opacity = "0";
-                        setTimeout(() => {
-                            loadingScreen.style.display = "none";
-                        }, 500);
-                    }, 500);
-                }
-            }
-            setTimeout(updateLoading, 500);
+        const flower = document.createElement("div");
+        flower.classList.add("floating-flower");
+        flower.innerHTML = "🌸";
+
+        flower.style.left = Math.random() * window.innerWidth + "px";
+        flower.style.animationDuration = (Math.random() * 5 + 3) + "s"; 
+        flower.style.opacity = Math.random() * 0.8 + 0.2;
+
+        document.body.appendChild(flower);
+        flowers.push(flower);
+
+        setTimeout(() => {
+            flower.remove();
+            flowers = flowers.filter(f => f !== flower);
+        }, 8000); 
+    }
+
+    function startFlowerEffect() {
+        if (!flowerInterval) {
+            flowerInterval = setInterval(createFlower, 1200);
         }
     }
 
+    function stopFlowerEffect() {
+        clearInterval(flowerInterval);
+        flowerInterval = null;
+    }
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            stopFlowerEffect();
+        } else {
+            startFlowerEffect();
+        }
+    });
+
+    startFlowerEffect();
+});
 
 
-    // 🧐 Kiểm tra nếu đang ở trang cá nhân
-    const isProfilePage = window.location.pathname.match(/person\d+\.html/);
-    if (!isProfilePage) return; // Nếu không phải trang cá nhân thì dừng lại luôn
+document.addEventListener("DOMContentLoaded", function () {
+    const loadingScreen = document.querySelector(".loading-screen");
+    const loadingBar = document.querySelector(".loading-bar");
+    const loadingText = document.querySelector(".loading-text");
 
-    function createFlower() {
-    const flower = document.createElement("div");
-    flower.classList.add("floating-flower");
-    flower.innerHTML = "🌸"; // Hoặc hình ảnh nếu muốn
+    if (!loadingScreen || !loadingBar || !loadingText) {
+        console.error("Lỗi: Không tìm thấy phần tử loading.");
+        return;
+    }
 
-    // Random vị trí X (chiều ngang)
-    flower.style.left = Math.random() * window.innerWidth + "px";
+    // Kiểm tra nếu đến từ trang cá nhân thì bỏ qua loading
+    const previousPage = document.referrer;
+    if (previousPage.includes("person")) {
+        loadingScreen.style.display = "none";
+        return;
+    }
 
-    // Fix lỗi spawn ở giữa -> Set top = 0 (trên cùng)
-    flower.style.top = "0px";
+    let progress = 0;
 
-    // Random thời gian rơi & hiệu ứng lượn sóng
-    flower.style.setProperty("--wave-x", Math.random() * 100 - 50 + "px");
-    flower.style.animationDuration = Math.random() * 3 + 2 + "s";
+    function updateLoading() {
+        progress += Math.random() * 5 + 3; // Tăng từ 3% - 8% mỗi lần
+        if (progress > 100) progress = 100;
 
-    document.body.appendChild(flower);
+        loadingBar.style.width = progress + "%";
+        loadingText.innerText = `Loading... ${Math.floor(progress)}%`;
 
-    // Xóa hoa khi rơi xong
-    setTimeout(() => {
-        flower.remove();
-    }, 5000);
-}
+        if (progress < 100) {
+            setTimeout(updateLoading, 300);
+        } else {
+            setTimeout(() => {
+                loadingScreen.style.opacity = "0"; // Làm mờ loading
+                setTimeout(() => {
+                    loadingScreen.style.display = "none"; // Ẩn hoàn toàn
+                }, 500);
+            }, 500);
+        }
+    }
+
+    setTimeout(updateLoading, 500); // Bắt đầu loading sau 0.5s để tránh lag
+});
