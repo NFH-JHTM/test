@@ -138,22 +138,16 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(updateLoading, 500); // Bắt đầu loading sau 0.5s để tránh lag
 });
 
-document.addEventListener("DOMContentLoaded", function () {
+
     const morseButton = document.querySelector(".morse-button");
     const morsePanel = document.querySelector(".morse-panel");
-    let closeTimeout;
 
     morseButton.addEventListener("click", function () {
-        // Nếu panel đang mở, tắt nó đi
-        if (morsePanel.style.display === "block") {
+        morsePanel.style.display = "block"; // Hiện panel
+
+        // Tự tắt panel sau 5 giây
+        setTimeout(() => {
             morsePanel.style.display = "none";
-            clearTimeout(closeTimeout); // Xóa timer cũ nếu có
-        } else {
-            // Mở panel và đặt timer 5 giây để tự tắt
-            morsePanel.style.display = "block";
-            closeTimeout = setTimeout(() => {
-                morsePanel.style.display = "none";
-            }, 5000); // 5000ms = 5 giây
-        }
+        }, 5000);
     });
 });
