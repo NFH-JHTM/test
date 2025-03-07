@@ -135,5 +135,62 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script Loaded! 🚀");
+
+    // 🌸 Danh sách hiệu ứng cho từng người
+    const effects = [
+        "🌸", "🍂", "🎶", "💖", "✨", "🔥", "❄️", "🌿", "🍁", "💎", "🎈", "🌟", "💥", "🦋", "🎀", "🌊",
+        "☁️", "💫", "🎵", "🏵️", "🌺", "🍀", "🐚", "🕊️", "🔮", "🎇", "🌠", "💡", "🍭"
+    ];
+
+    // Kiểm tra nếu đang ở trang cá nhân
+    const match = window.location.pathname.match(/person(\d+)\.html/);
+    if (match) {
+        const personIndex = parseInt(match[1]) - 1;
+        const chosenEffect = effects[personIndex % effects.length];
+
+        let effectsList = [];
+        const maxEffects = 15; // 🌸 Giới hạn số hiệu ứng trên màn hình
+
+        function createEffect() {
+            if (effectsList.length >= maxEffects) return; // Nếu đạt giới hạn, không tạo thêm
+
+            const effect = document.createElement("div");
+            effect.classList.add("floating-effect");
+            effect.innerHTML = chosenEffect;
+
+            effect.style.left = Math.random() * window.innerWidth + "px";
+            effect.style.animationDuration = (Math.random() * 5 + 3) + "s";
+            effect.style.opacity = Math.random() * 0.8 + 0.2;
+
+            document.body.appendChild(effect);
+            effectsList.push(effect);
+
+            setTimeout(() => {
+                effect.remove();
+                effectsList = effectsList.filter(e => e !== effect);
+            }, 8000);
+        }
+
+        let effectActive = true;
+
+        function startEffects() {
+            if (!effectActive) return;
+            createEffect();
+            setTimeout(startEffects, Math.random() * 1200 + 800); // 🌿 Random thời gian xuất hiện
+        }
+
+        // Dừng hiệu ứng khi rời tab để tránh lag
+        document.addEventListener("visibilitychange", function () {
+            effectActive = !document.hidden;
+            if (effectActive) startEffects();
+        });
+
+        startEffects();
+    }
+});
+
+
     setTimeout(updateLoading, 500); // Bắt đầu loading sau 0.5s để tránh lag
 });
