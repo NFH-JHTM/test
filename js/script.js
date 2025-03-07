@@ -82,30 +82,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const isProfilePage = window.location.pathname.match(/person\d+\.html/);
     if (!isProfilePage) return; // Nếu không phải trang cá nhân thì dừng lại luôn
 
-    // 🌸 Hiệu ứng hoa rơi lượn sóng
-   function createFloatingFlower() {
+    function createFloatingFlower() {
     if (!document.querySelector(".grid")) return; // Chỉ chạy trong trang cá nhân
 
     const flower = document.createElement("div");
     flower.classList.add("floating-flower");
     flower.innerHTML = "🌸";
 
-    let startX = Math.random() * window.innerWidth;
-    let waveX = Math.random() * 100 - 50; // Hoa lượn sóng random (-50px đến 50px)
+    let startX = Math.random() * window.innerWidth; // Hoa xuất hiện từ cạnh trên màn hình
+    let waveX = Math.random() * 200 - 100; // Biên độ lượn sóng (-100px đến 100px)
+    let duration = Math.random() * 5 + 7; // Thời gian rơi (7-12 giây)
 
     flower.style.left = `${startX}px`;
-    flower.style.top = "-50px"; // Bắt đầu từ trên cao
-    flower.style.animationDuration = `${Math.random() * 5 + 5}s`; // Rơi từ từ 5-10s
-    flower.style.setProperty("--wave-x", `${waveX}px`); // Truyền vào CSS variable
+    flower.style.top = "-50px"; // Bắt đầu từ trên cùng màn hình
+    flower.style.animation = `waveFall ${duration}s linear infinite`;
+    flower.style.setProperty("--wave-x", `${waveX}px`); // Truyền biến vào CSS
 
     document.body.appendChild(flower);
 
-    setTimeout(() => flower.remove(), 10000); // Xóa sau khi rơi xong
+    setTimeout(() => flower.remove(), duration * 1000); // Xóa sau khi rơi xong
 }
 
 function startFlowerEffect() {
     createFloatingFlower();
-    setTimeout(startFlowerEffect, Math.random() * 2000 + 1000);
+    setTimeout(startFlowerEffect, Math.random() * 1500 + 500); // Random 0.5-2s tạo hoa mới
 }
 
 if (window.location.pathname.includes("person")) {
