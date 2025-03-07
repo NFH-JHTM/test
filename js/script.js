@@ -47,55 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (!document.querySelector(".profile-container")) return; // Chỉ chạy trong trang cá nhân
-
-    const maxFlowers = 15; 
-    let flowers = [];
-    let flowerInterval;
-
-    function createFlower() {
-        if (flowers.length >= maxFlowers) return; 
-
-        const flower = document.createElement("div");
-        flower.classList.add("floating-flower");
-        flower.innerHTML = "🌸";
-
-        flower.style.left = Math.random() * window.innerWidth + "px";
-        flower.style.animationDuration = (Math.random() * 5 + 3) + "s"; 
-        flower.style.opacity = Math.random() * 0.8 + 0.2;
-
-        document.body.appendChild(flower);
-        flowers.push(flower);
-
-        setTimeout(() => {
-            flower.remove();
-            flowers = flowers.filter(f => f !== flower);
-        }, 8000); 
-    }
-
-    function startFlowerEffect() {
-        if (!flowerInterval) {
-            flowerInterval = setInterval(createFlower, 1200);
-        }
-    }
-
-    function stopFlowerEffect() {
-        clearInterval(flowerInterval);
-        flowerInterval = null;
-    }
-
-    document.addEventListener("visibilitychange", function () {
-        if (document.hidden) {
-            stopFlowerEffect();
-        } else {
-            startFlowerEffect();
-        }
-    });
-
-    startFlowerEffect();
-});
-
+    
 
 document.addEventListener("DOMContentLoaded", function () {
     const loadingScreen = document.querySelector(".loading-screen");
