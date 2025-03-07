@@ -272,17 +272,20 @@ body {
     animation: waveFall linear infinite;
 }
 
-/* 🎭 Animation hoa rơi lượn sóng */
 @keyframes waveFall {
     0% {
         transform: translateX(0) translateY(0) rotate(0deg);
         opacity: 1;
     }
+    50% {
+        transform: translateX(var(--wave-x, 50px)) translateY(50vh) rotate(180deg);
+    }
     100% {
-        transform: translateX(var(--wave-x, 50px)) translateY(100vh) rotate(360deg);
+        transform: translateX(0) translateY(100vh) rotate(360deg);
         opacity: 0;
     }
 }
+
 
 
 /* 🎀 Loading Screen */
