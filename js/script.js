@@ -82,40 +82,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const isProfilePage = window.location.pathname.match(/person\d+\.html/);
     if (!isProfilePage) return; // Nếu không phải trang cá nhân thì dừng lại luôn
 
-    function createFloatingFlower() {
-    const grid = document.querySelector(".grid");
-    if (!grid) return; // Chỉ chạy nếu có .grid (tức là trang cá nhân)
-
+    function createFlower() {
     const flower = document.createElement("div");
     flower.classList.add("floating-flower");
-    flower.innerHTML = "🌸";
+    flower.innerHTML = "🌸"; // Hoặc hình ảnh nếu muốn
 
-    // 🌸 Lấy vị trí của grid để hoa spawn đúng chỗ
-    let gridRect = grid.getBoundingClientRect();
-    let startX = Math.random() * gridRect.width + gridRect.left; // Random trong phạm vi grid
-    let waveX = Math.random() * 200 - 100; // Biên độ lượn sóng (-100px đến 100px)
-    let duration = Math.random() * 5 + 7; // Thời gian rơi (7-12 giây)
+    // Random vị trí X (chiều ngang)
+    flower.style.left = Math.random() * window.innerWidth + "px";
 
-    flower.style.left = `${startX}px`;
-    flower.style.top = `${gridRect.top - 50}px`; // Spawn ngay trên grid
-    flower.style.animation = `waveFall ${duration}s linear forwards`;
-    flower.style.setProperty("--wave-x", `${waveX}px`); // Truyền biến vào CSS
+    // Fix lỗi spawn ở giữa -> Set top = 0 (trên cùng)
+    flower.style.top = "0px";
+
+    // Random thời gian rơi & hiệu ứng lượn sóng
+    flower.style.setProperty("--wave-x", Math.random() * 100 - 50 + "px");
+    flower.style.animationDuration = Math.random() * 3 + 2 + "s";
 
     document.body.appendChild(flower);
 
-    setTimeout(() => flower.remove(), duration * 1000); // Xóa sau khi rơi xong
+    // Xóa hoa khi rơi xong
+    setTimeout(() => {
+        flower.remove();
+    }, 5000);
 }
-
-function startFlowerEffect() {
-    createFloatingFlower();
-    setTimeout(startFlowerEffect, Math.random() * 1500 + 500); // Random 0.5-2s tạo hoa mới
-}
-
-if (window.location.pathname.includes("person")) {
-    startFlowerEffect();
-}
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".floating-flower").forEach(flower => {
-        flower.style.zIndex = "9999"; // Ép cứng hoa rơi lên trên cùng
-    });
-});
