@@ -77,11 +77,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // 🔍 Tìm phần grid trên trang cá nhân
-    const profileGrid = document.querySelector(".grid");
+
+    // 🧐 Kiểm tra nếu đang ở trang cá nhân
+    const isProfilePage = window.location.pathname.match(/person\d+\.html/);
+    if (!isProfilePage) return; // Nếu không phải trang cá nhân thì dừng lại luôn
 
     // 🌸 Hiệu ứng hoa rơi lượn sóng
     function createFloatingEffect() {
+        const profileGrid = document.querySelector(".grid");
         if (!profileGrid) return;
 
         const floatingEffect = document.createElement("div");
@@ -89,16 +92,16 @@ document.addEventListener("DOMContentLoaded", function () {
         floatingEffect.innerHTML = "🌸";
 
         let gridRect = profileGrid.getBoundingClientRect();
-        let startX = Math.random() * gridRect.width + gridRect.left; // Vị trí random trên grid
-        let duration = Math.random() * 5 + 3; // Thời gian rơi (3-8s)
-        let amplitude = Math.random() * 100 + 50; // Độ rộng lượn sóng
-        let speed = Math.random() * 2 + 1; // Tốc độ dao động
+        let startX = Math.random() * gridRect.width + gridRect.left; // Random vị trí trên grid
+        let duration = Math.random() * 10 + 5; // Thời gian rơi chậm hơn (5-15s)
+        let amplitude = Math.random() * 80 + 30; // Độ rộng lượn sóng (mềm hơn)
+        let speed = Math.random() * 1 + 0.5; // Tốc độ dao động (chậm hơn)
 
         floatingEffect.style.position = "fixed";
         floatingEffect.style.left = `${startX}px`;
-        floatingEffect.style.top = `${gridRect.top - 30}px`; // Bắt đầu ngay phía trên grid
+        floatingEffect.style.top = `${gridRect.top - 50}px`; // Bắt đầu ngay trên grid
         floatingEffect.style.fontSize = "24px";
-        floatingEffect.style.opacity = Math.random() * 0.8 + 0.2;
+        floatingEffect.style.opacity = Math.random() * 0.8 + 0.4;
         floatingEffect.style.zIndex = "10";
         floatingEffect.style.pointerEvents = "none";
 
@@ -107,12 +110,12 @@ document.addEventListener("DOMContentLoaded", function () {
         let startTime = Date.now();
 
         function animateEffect() {
-            let elapsed = (Date.now() - startTime) / 1000; // Tính thời gian đã trôi qua
-            let newX = startX + Math.sin(elapsed * speed) * amplitude; // Tạo hiệu ứng lượn
-            let newY = elapsed * (gridRect.height / duration); // Rơi xuống dần dần
+            let elapsed = (Date.now() - startTime) / 1000; // Thời gian trôi qua
+            let newX = startX + Math.sin(elapsed * speed) * amplitude; // Lượn sóng ngang
+            let newY = elapsed * (gridRect.height / duration); // Rơi xuống từ từ
 
             floatingEffect.style.transform = `translate(${newX - startX}px, ${newY}px)`;
-            floatingEffect.style.opacity = 1 - elapsed / duration; // Mờ dần khi rơi xuống
+            floatingEffect.style.opacity = 1 - elapsed / duration; // Mờ dần
 
             if (elapsed < duration) {
                 requestAnimationFrame(animateEffect);
@@ -126,13 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startFloatingEffects() {
         createFloatingEffect();
-        setTimeout(startFloatingEffects, Math.random() * 1200 + 800);
+        setTimeout(startFloatingEffects, Math.random() * 2000 + 1000); // Xuất hiện ngẫu nhiên (1-3s)
     }
 
-    if (profileGrid) {
-        startFloatingEffects();
-        document.addEventListener("visibilitychange", function () {
-            if (!document.hidden) startFloatingEffects();
-        });
-    }
+    startFloatingEffects();
+
+    // Khi rời tab rồi quay lại, hiệu ứng sẽ tiếp tục
+    document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) startFloatingEffects();
+    });
 });
