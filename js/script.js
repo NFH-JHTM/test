@@ -144,17 +144,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const morsePanel = document.querySelector(".morse-panel");
 
     if (morseButton && morsePanel) {
-        morseButton.addEventListener("click", function () {
-            // Hiện panel
-            morsePanel.style.display = "block";
+        // Ẩn panel mặc định
+        morsePanel.style.display = "none";
 
-            // Sau 5 giây tự động ẩn
-            setTimeout(() => {
+        morseButton.addEventListener("click", function () {
+            // Kiểm tra nếu panel đang mở, thì ẩn nó đi
+            if (morsePanel.style.display === "block") {
                 morsePanel.style.display = "none";
-            }, 5000);
+            } else {
+                // Hiện panel
+                morsePanel.style.display = "block";
+
+                // Sau 5 giây tự động ẩn
+                setTimeout(() => {
+                    morsePanel.style.display = "none";
+                }, 5000);
+            }
         });
     } else {
         console.error("Không tìm thấy nút hoặc panel!");
     }
 });
-
