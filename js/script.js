@@ -77,75 +77,62 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // 🌸 Danh sách hiệu ứng cho từng người
-    const effects = [
-        "🌸", "🍂", "🎶", "💖", "✨", "🔥", "❄️", "🌿", "🍁", "💎", "🎈", "🌟", "💥", "🦋", "🎀", "🌊",
-        "☁️", "💫", "🎵", "🏵️", "🌺", "🍀", "🐚", "🕊️", "🔮", "🎇", "🌠", "💡", "🍭"
-    ];
+    // 🔍 Tìm phần grid trên trang cá nhân
+    const profileGrid = document.querySelector(".grid");
 
-    // Kiểm tra nếu đang ở trang cá nhân
-    const match = window.location.pathname.match(/person(\d+)\.html/);
-    if (match) {
-        const personIndex = parseInt(match[1]) - 1;
-        const chosenEffect = effects[personIndex % effects.length];
+    // 🌸 Hiệu ứng hoa rơi lượn sóng
+    function createFloatingEffect() {
+        if (!profileGrid) return;
 
-        let effectsList = [];
-        const maxEffects = 15; // 🌸 Giới hạn số hiệu ứng trên màn hình
+        const floatingEffect = document.createElement("div");
+        floatingEffect.classList.add("floating-effect");
+        floatingEffect.innerHTML = "🌸";
 
-        function createEffect() {
-            if (effectsList.length >= maxEffects) return; // Nếu đạt giới hạn, không tạo thêm
+        let gridRect = profileGrid.getBoundingClientRect();
+        let startX = Math.random() * gridRect.width + gridRect.left; // Vị trí random trên grid
+        let duration = Math.random() * 5 + 3; // Thời gian rơi (3-8s)
+        let amplitude = Math.random() * 100 + 50; // Độ rộng lượn sóng
+        let speed = Math.random() * 2 + 1; // Tốc độ dao động
 
-            const effect = document.createElement("div");
-            effect.classList.add("floating-effect");
-            effect.innerHTML = chosenEffect;
+        floatingEffect.style.position = "fixed";
+        floatingEffect.style.left = `${startX}px`;
+        floatingEffect.style.top = `${gridRect.top - 30}px`; // Bắt đầu ngay phía trên grid
+        floatingEffect.style.fontSize = "24px";
+        floatingEffect.style.opacity = Math.random() * 0.8 + 0.2;
+        floatingEffect.style.zIndex = "10";
+        floatingEffect.style.pointerEvents = "none";
 
-            let startX = Math.random() * window.innerWidth;
-            let duration = Math.random() * 5 + 3; // Random thời gian rơi
-            let amplitude = Math.random() * 100 + 50; // Độ rộng lượn sóng
-            let speed = Math.random() * 2 + 1; // Tốc độ lượn
+        document.body.appendChild(floatingEffect);
 
-            effect.style.position = "fixed";
-            effect.style.left = `${startX}px`;
-            effect.style.top = "-50px"; // Bắt đầu từ trên cao
-            effect.style.fontSize = "24px";
-            effect.style.opacity = Math.random() * 0.8 + 0.2;
-            effect.style.zIndex = "10";
-            effect.style.pointerEvents = "none"; // Không ảnh hưởng UI
+        let startTime = Date.now();
 
-            document.body.appendChild(effect);
-            effectsList.push(effect);
+        function animateEffect() {
+            let elapsed = (Date.now() - startTime) / 1000; // Tính thời gian đã trôi qua
+            let newX = startX + Math.sin(elapsed * speed) * amplitude; // Tạo hiệu ứng lượn
+            let newY = elapsed * (gridRect.height / duration); // Rơi xuống dần dần
 
-            let startTime = Date.now();
+            floatingEffect.style.transform = `translate(${newX - startX}px, ${newY}px)`;
+            floatingEffect.style.opacity = 1 - elapsed / duration; // Mờ dần khi rơi xuống
 
-            function animateEffect() {
-                let elapsed = (Date.now() - startTime) / 1000; // Thời gian đã trôi qua
-                let newX = startX + Math.sin(elapsed * speed) * amplitude; // Tạo hiệu ứng lượn
-                let newY = elapsed * (window.innerHeight / duration); // Rơi xuống từ từ
-
-                effect.style.transform = `translate(${newX - startX}px, ${newY}px)`;
-                effect.style.opacity = 1 - elapsed / duration; // Mờ dần khi gần chạm đất
-
-                if (elapsed < duration) {
-                    requestAnimationFrame(animateEffect);
-                } else {
-                    effect.remove();
-                    effectsList = effectsList.filter(e => e !== effect);
-                }
+            if (elapsed < duration) {
+                requestAnimationFrame(animateEffect);
+            } else {
+                floatingEffect.remove();
             }
-
-            requestAnimationFrame(animateEffect);
         }
 
-        function startEffects() {
-            createEffect();
-            setTimeout(startEffects, Math.random() * 1200 + 800);
-        }
+        requestAnimationFrame(animateEffect);
+    }
 
+    function startFloatingEffects() {
+        createFloatingEffect();
+        setTimeout(startFloatingEffects, Math.random() * 1200 + 800);
+    }
+
+    if (profileGrid) {
+        startFloatingEffects();
         document.addEventListener("visibilitychange", function () {
-            if (!document.hidden) startEffects();
+            if (!document.hidden) startFloatingEffects();
         });
-
-        startEffects();
     }
 });
-
