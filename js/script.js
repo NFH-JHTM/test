@@ -114,3 +114,8 @@ function startFlowerEffect() {
 if (window.location.pathname.includes("person")) {
     startFlowerEffect();
 }
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".floating-flower").forEach(flower => {
+        flower.style.zIndex = "9999"; // Ép cứng hoa rơi lên trên cùng
+    });
+});
