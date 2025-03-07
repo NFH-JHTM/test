@@ -145,13 +145,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (morseButton && morsePanel) {
         morseButton.addEventListener("click", function () {
-            morsePanel.style.display = "block"; // Hiện panel
+            // Hiện panel
+            morsePanel.style.display = "block";
 
-            // Tự tắt panel sau 5 giây
+            // Sau 5 giây tự động ẩn
             setTimeout(() => {
                 morsePanel.style.display = "none";
             }, 5000);
         });
+    } else {
+        console.error("Không tìm thấy nút hoặc panel!");
     }
 });
 
