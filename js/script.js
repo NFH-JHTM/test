@@ -83,19 +83,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!isProfilePage) return; // Nếu không phải trang cá nhân thì dừng lại luôn
 
     function createFloatingFlower() {
-    if (!document.querySelector(".grid")) return; // Chỉ chạy trong trang cá nhân
+    const grid = document.querySelector(".grid");
+    if (!grid) return; // Chỉ chạy nếu có .grid (tức là trang cá nhân)
 
     const flower = document.createElement("div");
     flower.classList.add("floating-flower");
     flower.innerHTML = "🌸";
 
-    let startX = Math.random() * window.innerWidth; // Hoa xuất hiện từ cạnh trên màn hình
+    // 🌸 Lấy vị trí của grid để hoa spawn đúng chỗ
+    let gridRect = grid.getBoundingClientRect();
+    let startX = Math.random() * gridRect.width + gridRect.left; // Random trong phạm vi grid
     let waveX = Math.random() * 200 - 100; // Biên độ lượn sóng (-100px đến 100px)
     let duration = Math.random() * 5 + 7; // Thời gian rơi (7-12 giây)
 
     flower.style.left = `${startX}px`;
-    flower.style.top = "-50px"; // Bắt đầu từ trên cùng màn hình
-    flower.style.animation = `waveFall ${duration}s linear infinite`;
+    flower.style.top = `${gridRect.top - 50}px`; // Spawn ngay trên grid
+    flower.style.animation = `waveFall ${duration}s linear forwards`;
     flower.style.setProperty("--wave-x", `${waveX}px`); // Truyền biến vào CSS
 
     document.body.appendChild(flower);
